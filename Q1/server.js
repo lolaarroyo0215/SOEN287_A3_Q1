@@ -1,37 +1,19 @@
 const http = require("http");
 const fs = require('fs').promises;
 const url = require('url');
+const express = require('express');
 const path = require('path');
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 console.log(__filename, __dirname);
 
-const server = http.createServer(async (req, res) => {
-    try{
-        //check if GET request
-        if(req.method === 'GET'){
-            let filePath;
-            //creating a router
-            if(req.url === '/') {
-                filePath = path.join(__dirname, 'public', 'index.html');
-            } else if(req.url === '/about'){
-                filePath = path.join(__dirname, 'public', 'about.html');
-            } else {
-                throw new Error('Not Found');
-            }
-            const data = await fs.readFile(filePath);
-            res.setHeader('Content-Type', 'text/html');
-            res.write(data);
-            res.end();
-        } else {
-            throw new Error('Method not allowed');
-        }
-    } catch (error){
-        res.writeHead(500, {'Content-Type' : 'text/plain' });
-        res.end('Server error');
-    }
-});
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public' , 'index.html'));
+})
 
-server.listen(8000, () => {
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
