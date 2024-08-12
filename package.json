@@ -4,6 +4,7 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
+    "start": "npm install --omit=dev && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:server1": "node Q1/server.js",
     "start:server2": "node Q2/server.js",
